@@ -1,0 +1,14 @@
+/bitrix/*
+!/bitrix/admin
+/bitrix/admin/*
+!/bitrix/admin/migrations.php
+
+
+docker
+docker-compose.yml
+upload/*
+
+install.config
+politika-konfidentsialnosti/
+soglasie.pdf
+untitled.php

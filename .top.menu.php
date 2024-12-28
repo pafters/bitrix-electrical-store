@@ -1,0 +1,38 @@
+<?
+$aMenuLinks = array(
+	array(
+		"О нас",
+		"http://planar.picom.su/#header",
+		array(),
+		array(),
+		""
+	),
+	array(
+		"Продукция",
+		"http://planar.picom.su/#suggest",
+		array(),
+		array(),
+		""
+	),
+	array(
+		"Производители",
+		"http://planar.picom.su/#producer",
+		array(),
+		array(),
+		""
+	),
+	array(
+		"Услуги",
+		"http://planar.picom.su/#capability",
+		array(),
+		array(),
+		""
+	),
+	array(
+		"Контакты",
+		"http://planar.picom.su/#contacts-footer",
+		array(),
+		array(),
+		""
+	),
+);

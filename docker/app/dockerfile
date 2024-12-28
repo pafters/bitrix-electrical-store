@@ -1,0 +1,10 @@
+FROM php:8.3-fpm-alpine
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions @composer bcmath gd igbinary mysqli opcache pcntl redis sockets xdebug
+RUN echo '* * * * * php /var/www/html/bitrix/modules/main/tools/cron_events.php' >> /etc/crontabs/root
+RUN ln -s /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+COPY cacert.pem /usr/local/etc/ssl/certs/cacert.pem
+COPY fpm.ini /usr/local/etc/php-fpm.d/zz-custom.conf
+COPY php.ini /usr/local/etc/php/conf.d/zz-custom.ini
+WORKDIR /var/www/html
+CMD ["sh", "-c", "crond -b -d 8 -L /proc/1/fd/2; php-fpm -R"]

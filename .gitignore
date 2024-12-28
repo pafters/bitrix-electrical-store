@@ -4,8 +4,7 @@
 !/bitrix/admin/migrations.php
 
 
-docker
-docker-compose.yml
+
 upload/*
 
 install.config

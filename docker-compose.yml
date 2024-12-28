@@ -1,0 +1,101 @@
+networks:
+  default:
+    internal: false
+    name: planar-default
+  internal:
+    internal: true
+    name: planar-internal
+services:
+  app:
+    build: ./docker/app
+    container_name: planar-app
+    depends_on:
+      cache:
+        condition: service_started
+      db:
+        condition: service_started
+      sessions:
+        condition: service_started
+    environment:
+      DATABASE_HOST: db
+      DATABASE_LOGIN: u
+      DATABASE_NAME: app
+      DATABASE_PASSWORD: u
+      XDEBUG_MODE: debug
+    image: app:local
+    networks:
+      internal:
+      default:
+    restart: 'no'
+    volumes:
+      - .:/var/www/html:rw
+  cache:
+    container_name: planar-cache
+    image: redis:alpine
+    networks:
+      internal:
+    restart: 'no'
+    volumes:
+      - cache:/data:rw
+  db:
+    build: ./docker/db
+    container_name: planar-db
+    environment:
+      MARIADB_DATABASE: app
+      MARIADB_PASSWORD: u
+      MARIADB_ROOT_PASSWORD: u
+      MARIADB_USER: u
+    image: db:local
+    networks:
+      default:
+      internal:
+    ports:
+      - '3306:3306'
+    restart: 'no'
+    volumes:
+      - db:/var/lib/mysql:rw
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  mail:
+    container_name: planar-mail
+    image: axllent/mailpit
+    networks:
+      default:
+      internal:
+    ports:
+      - '8025:8025'
+    restart: 'no'
+  sessions:
+    container_name: planar-sessions
+    image: redis:alpine
+    networks:
+      internal:
+    restart: 'no'
+    volumes:
+      - sessions:/data:rw
+  web:
+    build: ./docker/web
+    container_name: planar-web
+    depends_on:
+      app:
+        condition: service_started
+    hostname: test.local
+    image: web:local
+    networks:
+      default:
+      internal:
+    ports:
+      - '80:80'
+    restart: 'no'
+    volumes:
+      - .:/var/www/html:ro
+volumes:
+  cache:
+    name: planar-cache
+  db:
+    name: planar-db
+  sessions:
+    name: planar-sessions
